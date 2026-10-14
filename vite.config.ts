@@ -1,11 +1,30 @@
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
+import type { Plugin } from 'vite'
 import { defineConfig } from 'vitest/config'
 import pkg from './package.json' with { type: 'json' }
 
+// `npm run dev` answers /api/fetch with the same handler vercel runs, so the app works locally
+function devApi(): Plugin {
+  return {
+    name: 'pagedown-dev-api',
+    apply: 'serve',
+    configureServer(server) {
+      server.middlewares.use('/api/fetch', async (req, res) => {
+        const { handle } = (await server.ssrLoadModule('/server/handle.ts')) as typeof import('./server/handle')
+        const response = await handle(new Request(new URL(req.originalUrl ?? req.url ?? '/', 'http://localhost'), { method: req.method }))
+        res.statusCode = response.status
+        response.headers.forEach((v, k) => res.setHeader(k, v))
+        res.end(await response.text())
+      })
+    },
+  }
+}
+
 export default defineConfig({
   plugins: [
+    devApi(),
     react(),
     tailwindcss(),
     VitePWA({

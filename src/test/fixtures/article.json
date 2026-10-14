@@ -1,0 +1,19 @@
+{
+  "pageUrl": "https://example.com/guide/field-notes",
+  "title": "Field notes on quiet software",
+  "byline": "Ada Byrne",
+  "siteName": "Example Journal",
+  "lang": "en",
+  "excerpt": "By Ada Byrne",
+  "html": "<div id=\"readability-page-1\" class=\"page\"><div>\n    <article>\n      \n      <p>By Ada Byrne</p>\n      <p>Quiet software does one job and gets out of the way. It does not ask for your attention when it has nothing to say, and it says what happened in words a person would use. The best tools in a workshop are like this: a good chisel never sends a notification.</p>\n      <p>Most of what makes a page loud is not the writing. It is the chrome around it, the menus and banners and the footer that repeats the menu. Strip those away and the article is often a third of the bytes.</p>\n      <h2>What the reader keeps</h2>\n      <p>A reader keeps the headings, the paragraphs, the code and the tables. Links stay links, and they should point somewhere real, so <a href=\"https://example.com/guide/next\">the next note</a> resolves against the page it came from. Here is a <a href=\"https://example.com/out?utm_source=newsletter&amp;utm_medium=email&amp;fbclid=abc123&amp;gclid=xyz&amp;ref=keep\">tracked link</a> to clean.</p>\n      <figure><img src=\"https://example.com/img/fig.png?utm_source=feed\" alt=\"A chisel on a bench\"><figcaption>A chisel on a bench.</figcaption></figure>\n      <pre data-lang=\"js\"><code>const quiet = (tool) =&gt; tool.job()\nconsole.log(quiet)</code></pre>\n      <table>\n        <thead><tr><th>Part</th><th>Kept</th></tr></thead>\n        <tbody><tr><td>Headings</td><td>Yes</td></tr><tr><td>Footer</td><td>No</td></tr></tbody>\n      </table>\n      <p>That is the whole method. Keep what the author wrote, drop what the template added, and say how much was dropped so nobody has to wonder what went missing along the way.</p>\n    </article>\n    \n  </div></div>",
+  "cuts": {
+    "nav": 1,
+    "header": 1,
+    "footer": 1,
+    "aside": 1,
+    "ads": 1,
+    "scripts": 3,
+    "iframes": 0,
+    "forms": 0
+  }
+}

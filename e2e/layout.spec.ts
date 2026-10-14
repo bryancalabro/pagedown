@@ -1,5 +1,6 @@
 import type { Page } from "@playwright/test";
 import { expect, test } from "./fixtures";
+import { articleBody, stubApi } from "./stub";
 
 // layout: nothing on the page is wider than a phone. copied from calabrodesign's
 // skill-library/ops/new-app/templates/layout.spec.ts by /new-app step 3.
@@ -83,4 +84,30 @@ for (const route of ROUTES) {
             expect(offenders, "visible content crosses the viewport edge outside an overflow-x scroll container").toEqual([]);
         });
     }
+}
+
+// the longest realistic state: an article fetched from a long address, every option on, the
+// preview open, and the paste form with a long base address
+const LONG_URL = "https://www.example-publication-with-a-long-name.com/2026/10/14/field-notes-on-quiet-software-and-why-it-matters-more-than-ever?ref=homepage";
+for (const width of WIDTHS) {
+    test(`layout: / with an article, every option and the preview fits a ${width}px viewport`, async ({ page }) => {
+        await stubApi(page, () => ({ status: 200, body: { ...articleBody(LONG_URL), title: "Field notes on quiet software and why it matters more than ever before" } }));
+        await page.setViewportSize({ width, height: 844 });
+        await page.goto("/");
+        await page.getByLabel("Page link", { exact: true }).fill(LONG_URL);
+        await page.getByRole("button", { name: "Fetch", exact: true }).click();
+        for (const name of [/^Reference links/, /^Front matter/]) await page.getByRole("switch", { name }).check();
+        await page.evaluate(() => document.fonts.ready);
+        for (const step of ["raw", "preview"]) {
+            if (step === "preview") await page.getByRole("button", { name: "Preview", exact: true }).click();
+            await page.locator(step === "raw" ? "pre.markdown" : ".preview h1").waitFor();
+            const { scrollWidth, innerWidth, offenders } = await measure(page);
+            expect.soft(scrollWidth, `${step}: the page scrolls sideways`).toBeLessThanOrEqual(innerWidth);
+            expect(offenders, `${step}: content crosses the viewport edge`).toEqual([]);
+        }
+        await page.getByRole("button", { name: "Paste HTML", exact: true }).click();
+        await page.getByLabel(/^Page address/).fill(LONG_URL);
+        const { offenders } = await measure(page);
+        expect(offenders, "paste form crosses the viewport edge").toEqual([]);
+    });
 }
