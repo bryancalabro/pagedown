@@ -105,6 +105,28 @@
     color: var(--accent);
     flex: none;
   }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .about {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+  .about p {
+    margin: 0;
+    color: var(--ink);
+  }
+  .about h3 {
+    margin: 8px 0 0;
+    font-family: var(--font-display-stack);
+    font-size: 1.0625rem;
+    font-weight: 400;
+  }
   .theme-button {
     display: inline-grid;
     place-items: center;

@@ -1,4 +1,5 @@
 import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react'
+import { About } from './components/About'
 import { CutStrip } from './components/CutStrip'
 import { EmptyState } from './components/EmptyState'
 import { Footer } from './components/Footer'
@@ -229,7 +230,10 @@ export default function App() {
     <div className="page">
       <header className="site-header">
         <Wordmark />
-        <ThemeToggle />
+        <div className="header-actions">
+          <About />
+          <ThemeToggle />
+        </div>
       </header>
       <main className="main instrument">
         <section className="pane input-pane" aria-label="Source">
