@@ -1,7 +1,7 @@
 // the /api/fetch function: one allow-listed parameter, a guarded fetch, readability on the
 // server, and a trimmed json answer the client turns into markdown. successes cache at the
 // edge; failures never do.
-import { parseHTML } from 'linkedom'
+import { JSDOM, VirtualConsole } from 'jsdom'
 import { extract } from '../src/lib/extract.js'
 import type { Cuts } from '../src/lib/extract.js'
 import { normalizeUrl } from '../src/lib/url.js'
@@ -60,7 +60,8 @@ const json = (body: FetchResult, status: number, cache: string) =>
 
 const fail = (code: ErrorCode, status?: number) => json(status ? { ok: false, code, status } : { ok: false, code }, STATUS[code], 'no-store')
 
-const parse = (html: string) => parseHTML(html).document as unknown as Document
+// a silent console: a page's broken css is not this function's error
+const parse = (html: string) => new JSDOM(html, { virtualConsole: new VirtualConsole() }).window.document
 
 export async function handle(request: Request, deps: FetchDeps = defaultDeps, now: () => Date = () => new Date()): Promise<Response> {
   if (request.method !== 'GET') return fail('method')

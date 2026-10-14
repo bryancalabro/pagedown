@@ -1,10 +1,10 @@
 import { readFileSync } from 'node:fs'
-import { parseHTML } from 'linkedom'
+import { JSDOM } from 'jsdom'
 import { describe, expect, it } from 'vitest'
 import { absolute, extract } from './extract'
 
 const fixture = readFileSync(new URL('../test/fixtures/article.html', import.meta.url), 'utf8')
-const parse = (html: string) => parseHTML(html).document as unknown as Document
+const parse = (html: string) => new JSDOM(html).window.document
 const PAGE = 'https://example.com/guide/field-notes'
 
 describe('extract', () => {
@@ -27,7 +27,7 @@ describe('extract', () => {
 
   it('makes links and images absolute and keeps the code language', () => {
     expect(article.html).toContain('href="https://example.com/guide/next"')
-    expect(article.html).toContain('src="https://example.com/img/fig.png"')
+    expect(article.html).toContain('src="https://example.com/img/fig.png?utm_source=feed"')
     expect(article.html).toContain('data-lang="js"')
   })
 
