@@ -1,21 +1,13 @@
 // turns a whole html page into its main article: counts the page chrome that gets cut,
 // makes every link and image absolute, then lets mozilla readability pick the article.
-// the parser is passed in, so the same code runs on the server (linkedom) and in the
+// the parser is passed in, so the same code runs on the server (jsdom) and in the
 // browser (DOMParser) for pasted html.
 import { Readability } from '@mozilla/readability'
+import type { Cuts } from './cuts.js'
+
+export type { Cuts } from './cuts.js'
 
 export type Parse = (html: string) => Document
-
-export interface Cuts {
-  nav: number
-  header: number
-  footer: number
-  aside: number
-  ads: number
-  scripts: number
-  iframes: number
-  forms: number
-}
 
 export interface Article {
   title: string
@@ -27,8 +19,6 @@ export interface Article {
   html: string
   cuts: Cuts
 }
-
-export const CUT_KINDS: (keyof Cuts)[] = ['nav', 'header', 'footer', 'aside', 'ads', 'scripts', 'iframes', 'forms']
 
 // common ad containers; a count, not a promise that every ad on the web matches
 const AD_SELECTOR = [

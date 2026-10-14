@@ -40,6 +40,20 @@ function service(opts: MarkdownOptions) {
     },
   })
 
+  // a card link that wraps a heading or paragraphs: link the first line, keep the rest as blocks
+  td.addRule('blockLink', {
+    filter: (node) => node.nodeName === 'A' && !!node.getAttribute('href') && !!node.querySelector('h1, h2, h3, h4, h5, h6, p, div, ul, ol, figure'),
+    replacement: (content, node) => {
+      const href = (node as HTMLElement).getAttribute('href')!
+      const lines = content.trim().split('\n')
+      const i = lines.findIndex((l) => l.trim() && !/^!\[/.test(l.trim()))
+      if (i < 0) return content
+      const m = /^(#{1,6}\s+)?(.*)$/.exec(lines[i].trim())!
+      lines[i] = `${m[1] ?? ''}[${m[2].replace(/[[\]]/g, '\\$&')}](${href})`
+      return `\n\n${lines.join('\n')}\n\n`
+    },
+  })
+
   if (!opts.images) td.addRule('noImages', { filter: ['img', 'picture', 'figure'], replacement: (content, node) => (node.nodeName === 'FIGURE' ? content : '') })
   else
     td.addRule('figure', {
@@ -52,6 +66,7 @@ function service(opts: MarkdownOptions) {
     td.addRule('cleanLinks', {
       filter: (node) => {
         if (node.nodeName === 'A' && node.getAttribute('href')) node.setAttribute('href', stripTracking(node.getAttribute('href')!))
+        if (node.nodeName === 'IMG' && node.getAttribute('src')) node.setAttribute('src', stripTracking(node.getAttribute('src')!))
         return false
       },
       replacement: () => '',

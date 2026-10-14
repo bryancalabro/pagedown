@@ -1,12 +1,12 @@
 import { readFileSync } from 'node:fs'
-import { parseHTML } from 'linkedom'
+import { JSDOM } from 'jsdom'
 import { describe, expect, it } from 'vitest'
 import { compose, countWords, estimateTokens, frontMatter, readingMinutes } from './compose'
 import { extract } from './extract'
 import { toMarkdown } from './markdown'
 
 const fixture = readFileSync(new URL('../test/fixtures/article.html', import.meta.url), 'utf8')
-const parse = (html: string) => parseHTML(html).document as unknown as Document
+const parse = (html: string) => new JSDOM(html).window.document
 const article = extract(fixture, 'https://example.com/guide/field-notes', parse)!
 const md = (o: Partial<Parameters<typeof toMarkdown>[1]> = {}) => toMarkdown(article.html, { images: true, referenceLinks: false, stripTracking: true, ...o })
 
@@ -21,7 +21,7 @@ describe('toMarkdown', () => {
   it('keeps absolute links and images', () => {
     const out = md()
     expect(out).toContain('[the next note](https://example.com/guide/next)')
-    expect(out).toContain('![A chisel on a bench](https://example.com/img/fig.png)')
+    expect(out).toContain('![A chisel on a bench](https://example.com/img/fig.png)') // the feed's utm_source is stripped from the image too
   })
   it('strips tracking parameters, or leaves them when asked', () => {
     expect(md()).toContain('(https://example.com/out?ref=keep)')
@@ -35,6 +35,10 @@ describe('toMarkdown', () => {
     expect(out).not.toMatch(/(^|[^!])\[[^\]]*\]\(https:\/\//m)
     expect(out).toMatch(/\[the next note\]\[\d+\]/)
     expect(out).toMatch(/\n\[\d+\]: https:\/\/example\.com\/guide\/next/)
+  })
+  it('links the heading of a card link instead of wrapping blocks in brackets', () => {
+    const out = toMarkdown('<a href="https://x.test/post"><h2>New post</h2><p>Summary here.</p></a>', { images: true, referenceLinks: false, stripTracking: false })
+    expect(out).toBe('## [New post](https://x.test/post)\n\nSummary here.')
   })
   it('fences code that itself holds backticks', () => {
     expect(toMarkdown('<pre><code>a ``` b</code></pre>', { images: true, referenceLinks: false, stripTracking: false })).toBe('````\na ``` b\n````')
