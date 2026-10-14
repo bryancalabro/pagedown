@@ -41,5 +41,31 @@
       "houseRuleCandidates": [],
       "skillFeedback": []
     }
-  ]
+  ],
+  "retrospective": {
+    "writtenAt": "2026-10-14",
+    "phasesRun": [
+      "P0"
+    ],
+    "rulesThatHeld": [
+      "The SSRF guard checks the address the socket connects to on every hop (P0 carryForward); the redirect-to-metadata test proved no second request is made"
+    ],
+    "rulesRevised": [],
+    "failuresTheLoopCaught": [
+      "The e2e suite under the production CSP caught pasted <style> blocks tripping style-src in the paste flow, and an offline fetch reporting the wrong message because the converter chunk failed to load first",
+      "house-audit e2e-exact caught a substring locator in the strip spec",
+      "Running the handler against real pages caught Readability crashing under linkedom on danluu.com (no <html> or <body>) and card links wrapping headings in brackets"
+    ],
+    "wouldHaveMissedHumanReview": [
+      "jsdom 27 loads an ES-only module with require(), which Vercel's Node runtime refuses: every /api/fetch call failed in production while 78 unit and 36 e2e tests passed, because Node 22 locally allows require(esm). Playwright's loader hit the same error and the workaround hid the signal",
+      "Fragment Mono's => ligature rendered as an arrow in the raw Markdown; only a screenshot showed it"
+    ],
+    "houseRuleCandidates": [
+      {
+        "rule": "A Vercel function's dependencies load in a test with require(esm) switched off",
+        "rationale": "Vercel's Node runtime refuses require() of an ES module; Node 22 locally allows it, so every local gate passes on a function that cannot start",
+        "evidence": "server/runtime.test.ts; production log 2026-10-14 ERR_REQUIRE_ESM"
+      }
+    ]
+  }
 }
