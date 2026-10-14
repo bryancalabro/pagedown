@@ -1,0 +1,15 @@
+{
+  "name": "Pagedown",
+  "short_name": "Pagedown",
+  "description": "Fetches any public web page and returns its main article as clean Markdown, with navigation, ads, and page chrome stripped and source links kept.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#171C2B",
+  "theme_color": "#171C2B",
+  "icons": [
+    { "src": "/favicons/favicon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "/favicons/favicon-48.png", "sizes": "48x48", "type": "image/png" },
+    { "src": "/favicons/favicon-180.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}
