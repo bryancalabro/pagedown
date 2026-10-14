@@ -1,0 +1,48 @@
+{
+  "app": "pagedown",
+  "width": 1280,
+  "height": 800,
+  "generated": "2026-10-14T15:49:07.606Z",
+  "targets": [
+    {
+      "name": "pagedown",
+      "role": "app",
+      "source": "build",
+      "shots": {
+        "dark": "pagedown-dark.jpg",
+        "light": "pagedown-light.jpg"
+      }
+    },
+    {
+      "name": "otp",
+      "role": "recent",
+      "source": "build",
+      "shots": {
+        "dark": "otp-dark.jpg",
+        "light": "otp-light.jpg"
+      }
+    },
+    {
+      "name": "stego",
+      "role": "recent",
+      "source": "build",
+      "shots": {
+        "dark": "stego-dark.jpg",
+        "light": "stego-light.jpg"
+      }
+    },
+    {
+      "name": "markov",
+      "role": "recent",
+      "source": "build",
+      "shots": {
+        "dark": "markov-dark.jpg",
+        "light": "markov-light.jpg"
+      }
+    }
+  ],
+  "sheets": {
+    "dark": "side-by-side-dark.jpg",
+    "light": "side-by-side-light.jpg"
+  }
+}
