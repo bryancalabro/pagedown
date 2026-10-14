@@ -14,9 +14,11 @@ const siteHeaders = Object.fromEntries(
 siteHeaders['content-security-policy'] = siteHeaders['content-security-policy'].replace(/;\s*upgrade-insecure-requests/, '')
 delete siteHeaders['strict-transport-security']
 
-export const test = base.extend<{ guard: void }>({
+export const test = base.extend<{ guard: void; allowConsole: RegExp[] }>({
+  // a spec that provokes an expected failure names the console line it allows
+  allowConsole: [[], { option: true }],
   guard: [
-    async ({ page }, use) => {
+    async ({ page, allowConsole }, use) => {
       const problems: string[] = []
       await page.route('**/*', async (route) => {
         if (route.request().resourceType() !== 'document') return route.continue()
@@ -24,7 +26,7 @@ export const test = base.extend<{ guard: void }>({
         await route.fulfill({ response, headers: { ...response.headers(), ...siteHeaders } })
       })
       page.on('console', (m) => {
-        if (m.type() === 'error') problems.push(`console: ${m.text()}`)
+        if (m.type() === 'error' && !allowConsole.some((re) => re.test(m.text()))) problems.push(`console: ${m.text()}`)
       })
       page.on('pageerror', (e) => problems.push(`pageerror: ${e.message}`))
       await page.addInitScript(() => {
