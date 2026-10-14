@@ -1,0 +1,4 @@
+#!/bin/sh
+# the phase gate for every agent and every person: a commit that stamps blueprint.md done needs a fresh green receipt.
+# git runs this because package.json "prepare" sets core.hooksPath to .githooks. never commit with --no-verify.
+exec node scripts/phase-gate.mjs --staged

@@ -1,0 +1,13 @@
+---
+description: Blueprint loop execution rules. Always applies while blueprint.md exists.
+alwaysApply: true
+---
+
+# Blueprint loop
+
+- `blueprint.md` is the specification. `learnings.json` is the memory. `AGENTS.md` "Learned rules" is the distilled memory. Read all three before touching source.
+- Work one feature at a time in phase order. Do not start phase N+1 until `node scripts/verify-phase.mjs --phase N` prints GREEN and phase N has a complete `learnings.json` entry.
+- Never hand-edit `.blueprint/receipt.json`. Never mark a feature done, fill a completion stamp, or add a ledger row without a fresh receipt; the git pre-commit hook (`scripts/phase-gate.mjs`) blocks it. Never commit with `--no-verify`.
+- Never skip, disable, or weaken a check to get green. Fix the cause and write the root cause into `learnings.json`.
+- Verification lines carry observations ("AC-2: pass, size filter set to Large returned 17 cards"), never restated checks.
+- Scope outside the current phase goes into the blueprint change log as a backlog note, not into this commit.
