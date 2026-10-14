@@ -1,0 +1,164 @@
+@import "tailwindcss";
+@import "./tokens.css";
+@import "./fonts.css";
+
+/* derived tokens, mixed from the record's six so a regeneration never loses them */
+:root {
+  --line: color-mix(in oklab, var(--ink) 12%, transparent);
+  --line-strong: color-mix(in oklab, var(--ink) 24%, transparent);
+  --raised: color-mix(in oklab, var(--surface) 90%, var(--ink));
+  --sunken: color-mix(in oklab, var(--bg) 60%, var(--surface));
+  --focus: var(--accent);
+  --radius-control: 8px;
+  --radius-chip: 999px;
+}
+
+/* the one status color for a failure; the accent stays for the action and the cut marks */
+:root {
+  --bad: #FF8E9E;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bad: #A3122F;
+  }
+}
+:root[data-theme="light"] {
+  --bad: #A3122F;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-line: var(--line);
+  --font-display: var(--font-display-stack);
+  --font-body: var(--font-body-stack);
+}
+
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body-stack);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    min-height: 100dvh;
+  }
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+    color: inherit;
+  }
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 64px;
+  }
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-display-stack);
+    font-size: 1.5rem;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .wordmark-caret {
+    color: var(--accent);
+    flex: none;
+  }
+  .theme-button {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-control);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .theme-button:hover {
+    color: var(--ink);
+    background: var(--surface);
+  }
+  .main {
+    flex: 1;
+    padding: 4px 0 32px;
+    min-width: 0;
+  }
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 40px 24px;
+    max-width: 34rem;
+  }
+  .empty-title {
+    margin: 0;
+    font-family: var(--font-display-stack);
+    font-size: 1.5rem;
+    line-height: 1.25;
+  }
+  .empty-body {
+    margin: 0;
+    color: var(--muted);
+  }
+  .site-footer {
+    padding: 24px 0 28px;
+    font-size: 0.8125rem;
+  }
+  .footer-link {
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
