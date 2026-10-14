@@ -11,7 +11,9 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "preview": "vite preview",
-    "icons": "node scripts/icons.mjs"
+    "icons": "node scripts/icons.mjs",
+    "phase": "node scripts/verify-phase.mjs",
+    "prepare": "node scripts/phase-gate.mjs --install"
   },
   "dependencies": {
     "@fontsource/fragment-mono": "^5.3.0",

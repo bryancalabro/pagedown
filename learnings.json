@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "phases": [
+    {
+      "id": "P0",
+      "status": "complete",
+      "startedAt": "2026-10-14",
+      "finishedAt": "2026-10-14",
+      "attempts": 1,
+      "intended": [
+        "Derive blueprint.md from the catalog record on the scaffold commit, write every acceptance check, install the loop machinery. No product code."
+      ],
+      "done": [
+        "blueprint.md derived with 12 features and written checks",
+        "learnings.json seeded",
+        "scripts/verify-phase.mjs, scripts/phase-gate.mjs, git pre-commit hook and agent adapters wired"
+      ],
+      "notDone": [],
+      "failures": [],
+      "decisions": [
+        {
+          "choice": "An ink-navy ground (#171C2B) with a proofreader's crimson",
+          "over": "a near-black ground with a red-orange accent",
+          "why": "every near-black and red pairing collided with ear, epoch, anagrid, tuner or floral in the look check"
+        },
+        {
+          "choice": "End-to-end checks stub /api/fetch with responses the real converter produced from fixtures",
+          "over": "live fetches of public pages",
+          "why": "vite preview runs no Vercel function, Chromium in a cloud session cannot reach outside hosts, and the guard rightly refuses a localhost fixture server"
+        },
+        {
+          "choice": "The preview shows images as labeled links",
+          "over": "loading third-party images in the preview",
+          "why": "img-src stays 'self', so a preview never tells an image host who is reading"
+        }
+      ],
+      "deviations": [],
+      "carryForward": [
+        "The SSRF guard is tested against an injected resolver; any change to how the function connects (a new HTTP client, a proxy) must keep the check on the resolved address of every hop, not on the hostname."
+      ],
+      "houseRuleCandidates": [],
+      "skillFeedback": []
+    }
+  ]
+}

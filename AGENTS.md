@@ -147,3 +147,33 @@ roll: Readwise Reader's editorial reading calm x high-contrast dark mode with on
 ### Verification
 
 `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`, `npm run test:e2e` (Playwright on port 4991 against the production build, with the `vercel.json` headers added to every document response).
+## Blueprint loop
+
+This repo is executed phase by phase from `blueprint.md` with `/phase`. The procedure lives in the calabrodesign skill library (`blueprint/phase.md`); the short form:
+
+1. `node scripts/verify-phase.mjs --status` says where the loop is.
+2. Read every `carryForward` in `learnings.json` and the "Learned rules" below before planning.
+3. Plan in `.blueprint/phases/P<N>/plan.md` before editing source.
+4. Build one feature at a time. Walk every acceptance check in the running app and record what you saw.
+5. `node scripts/verify-phase.mjs --phase <N> --write-receipt` must print GREEN before any block is stamped done. The git pre-commit hook (`scripts/phase-gate.mjs`) enforces this in every agent; never commit with `--no-verify`.
+6. Interrogate deviations for every feature stamped this phase and append a `## Phase N` section to `deviations.md` (the next phase's gate requires it).
+7. Close the phase with a `learnings.json` entry (intended, done, notDone, failures with root causes, decisions, deviations, carryForward, houseRuleCandidates, skillFeedback), distill into the rules below, and append house candidates and skill feedback to `.blueprint/house-candidates.md` and `.blueprint/skill-feedback.md` for `/retro promote`.
+
+Three failed attempts at one phase writes `.blueprint/phases/P<N>/ESCALATION.md` and stops for a human decision.
+
+Resume prompt, if a session dies mid-run:
+
+```
+Resume the blueprint loop on this branch.
+Read AGENTS.md, blueprint.md, and learnings.json first.
+Run node scripts/verify-phase.mjs --status.
+Repair the last incomplete phase before starting the next one.
+Continue through every remaining phase, then run /retro and commit deviations.md.
+Ask no questions except the one escalation /phase allows for a blocked decision. Do not add features outside the blueprint.
+```
+
+### Learned rules
+
+Distilled from `learnings.json`. One imperative line, one rationale line. Max 20; merge or retire (`[RETIRED, see R-nnn]`) before adding a 21st.
+
+_(none yet)_
