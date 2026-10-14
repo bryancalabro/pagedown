@@ -21,3 +21,16 @@ test('the theme button cycles device, light and dark and remembers the choice', 
   await page.getByRole('button', { name: /^Dark theme/ }).click()
   await expect(page.locator('html')).not.toHaveAttribute('data-theme', /.+/)
 })
+
+test('the about button sits left of the theme button and explains the app', async ({ page }) => {
+  await page.goto('/')
+  const about = page.getByRole('button', { name: 'About Pagedown', exact: true })
+  const theme = page.getByRole('button', { name: /^Theme follows your device/ })
+  const [a, t] = [await about.boundingBox(), await theme.boundingBox()]
+  expect(a!.x + a!.width).toBeLessThanOrEqual(t!.x)
+  expect(Math.abs(a!.y - t!.y)).toBeLessThan(2)
+  await about.click()
+  const dialog = page.getByRole('dialog', { name: 'About Pagedown', exact: true })
+  await expect(dialog).toContainText('writes the page\'s article out as GitHub-flavored Markdown')
+  await expect(dialog).toContainText('the HTML is never sent anywhere')
+})
